@@ -67,14 +67,25 @@
         <h2>Gameweek {{ props.bootstrap.currentGW?.id }}</h2>
     </div>
 
-    <h3>Standout Players</h3>
+    <h4>Points</h4>
+    <div class="card">
+         <div class="row-stat-item">
+            <h3>{{ props.bootstrap.currentGW?.average_entry_score }} </h3>
+            <span>Average Points</span>
+        </div>
+        <div class="row-stat-item">
+            <h3>{{ props.bootstrap.currentGW?.highest_score }}</h3>
+            <span>Highest points</span>
+        </div>
+    </div>
+
+    <h4>Standout Players</h4>
     <div class="card" v-if="bootstrap.currentGW">
         <div class="row-stat-item">
             <h3>{{ bootstrap.players[bootstrap.currentGW.most_captained].web_name }}</h3>
             <img :src="bootstrap.players[bootstrap.currentGW.most_captained].photo">
             <div class="points-holder white">
-                {{ 2 * bootstrap.players[bootstrap.currentGW.most_captained].event_points }} pts
-                <span>[{{ bootstrap.players[bootstrap.currentGW.most_captained].event_points }}]</span>
+                {{ bootstrap.players[bootstrap.currentGW.most_captained].event_points }} pts
             </div>
             <span>Most Captained</span>
         </div>
@@ -109,18 +120,6 @@
             <img :src="differential.player?.photo">
             <div class="points-holder">{{ differential?.maxVal }}</div>
             <span>Biggest Differential</span>
-        </div>
-    </div>
-
-    <h3>Points</h3>
-    <div class="card">
-         <div class="row-stat-item">
-            <h3>{{ props.bootstrap.currentGW?.average_entry_score }} </h3>
-            <span>Average Points</span>
-        </div>
-        <div class="row-stat-item">
-            <h3>{{ props.bootstrap.currentGW?.highest_score }}</h3>
-            <span>High points</span>
         </div>
     </div>
 </template>

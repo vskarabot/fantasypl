@@ -6,8 +6,8 @@
   import type { MyTeamInterface } from './types/team';
 
   import MyTeam from './components/MyTeam.vue';
-  import Leagues from './components/Leagues.vue';
   import Overview from './components/Overview.vue';
+import Leagues from './components/Leagues.vue';
 
   /** 
    *   bootstrap data i didnt use:
@@ -43,7 +43,8 @@
     if (!selectedTeam.value.id)
       return;
     const res = await axios.get(import.meta.env.VITE_PROXY_URL + `https://fantasy.premierleague.com/api/entry/${selectedTeam.value.id}/event/${bootstrap.value.currentGW?.id}/picks/`)
-    myTeam.value = res.data;    
+    myTeam.value = res.data;   
+    console.log(myTeam.value) 
   }
 
   const changeTeamID = () => {
@@ -94,16 +95,16 @@
 
   <h2>My Team</h2>
   <div class="card id-setup">
-    <input type="text" v-model="selectedTeam.inputText" placeholder="Enter your FPL team ID">
-    <button @click.prevent="changeTeamID()">
+    <input type="text" v-model="selectedTeam.inputText" placeholder="Enter your FPL team ID" @keyup.enter="changeTeamID()">
+    <button @click="changeTeamID()">
         Confirm
     </button>
   </div>
 
-  <MyTeam :bootstrap="bootstrap" :myTeam="myTeam"/>
+  <MyTeam :bootstrap="bootstrap" :myTeam="myTeam" />
 
-  <!-- <br>
-  <Leagues /> -->
+  <br>
+  <Leagues />
   
 </template>
 

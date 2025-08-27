@@ -1,11 +1,17 @@
 <script setup lang="ts">
-    import type { Bootstrap } from '../types/bootstrap';
+    import { computed } from 'vue';
+import type { Bootstrap } from '../types/bootstrap';
     import type { Pick } from '../types/team';
 
     const props = defineProps<{
         player: Pick,
         bootstrap: Bootstrap
     }>();
+
+    const playerPoints = computed(() => {
+        const basePoints = props.bootstrap.players[props.player.element].event_points;
+        return props.player.multiplier > 0 ? basePoints * props.player.multiplier : basePoints;
+    });
 
 </script>
 
@@ -18,7 +24,7 @@
             </div>
             <span>{{ props.bootstrap.players[props.player.element].web_name }}</span>
             <p class="player-points">
-                {{ props.bootstrap.players[props.player.element].event_points * props.player.multiplier }}
+                {{ playerPoints }}
             </p>
         </div>
     </div>

@@ -23,10 +23,35 @@ import Player from './Player.vue';
 
         return pbp;
     });
+
+    const rankFormat = (rank: number) => {
+        return rank.toLocaleString('de-DE');
+    };
     
 </script>
 
 <template>
+    <h4>Season Overview</h4>
+    <div class="card" v-if="props.myTeam.entry_history">
+        <div class="row-stat-item">
+            <h3>{{ rankFormat(props.myTeam.entry_history.overall_rank) }}</h3>
+            <span>Overall Rank</span>
+        </div>
+        <div class="row-stat-item">
+            <h3>{{ props.myTeam.entry_history.percentile_rank }}</h3>
+            <span>Rank Percentile</span>
+        </div>
+        <div class="row-stat-item">
+            <h3>{{ props.myTeam.entry_history.total_points }}</h3>
+            <span>Total Points</span>
+        </div>
+        <div class="row-stat-item">
+            <h3>{{ props.myTeam.entry_history.value / 10 }}m £</h3>
+            <span>Team Value</span>
+        </div>
+    </div>
+
+    <h4 v-if="props.myTeam.entry_history">Gameweek {{ bootstrap.currentGW?.id }} Squad</h4>
     <div class="card card-team" v-if="props.myTeam.entry_history">
         <div class="field">
             <div class="half-circle"></div>
@@ -46,6 +71,10 @@ import Player from './Player.vue';
             <div class="row-stat-item">
                 <h3>{{ props.myTeam.active_chip ? props.myTeam.active_chip : '/' }}</h3>
                 <span>Chip Used</span>
+            </div>
+            <div class="row-stat-item">
+                <h3>{{ rankFormat(props.myTeam.entry_history.rank) }}</h3>
+                <span>GW Rank</span>
             </div>
         </div>
         <div class="squad-canvas">
