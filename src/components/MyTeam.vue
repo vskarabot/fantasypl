@@ -38,7 +38,7 @@ import Player from './Player.vue';
             <span>Overall Rank</span>
         </div>
         <div class="row-stat-item">
-            <h3>{{ props.myTeam.entry_history.percentile_rank }}</h3>
+            <h3>{{ props.myTeam.entry_history.percentile_rank }}%</h3>
             <span>Rank Percentile</span>
         </div>
         <div class="row-stat-item">

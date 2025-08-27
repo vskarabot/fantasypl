@@ -39,6 +39,11 @@ body {
   justify-content: center;
 }
 
+hr {
+  border: none;
+  border-top: 1px solid #41054b;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -103,7 +108,7 @@ button:focus-visible {
 }
 
 .row-stat-item img {
-  max-width: 6rem;
+  max-width: 7rem;
 }
 
 .card {
@@ -115,7 +120,6 @@ button:focus-visible {
   background-color: #28002b;
 
   box-shadow: 5px 5px 10px #00000050;
-  flex-wrap: wrap;
 }
 
 .title-live {
