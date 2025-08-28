@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { ref } from 'vue';
-    import type { TIDChip } from '../types/chiptid';
+    import type { TIDChip } from '../../types/chiptid';
 
     const emit = defineEmits(['changeTeam']);
 

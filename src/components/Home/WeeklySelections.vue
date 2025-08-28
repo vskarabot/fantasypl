@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { computed } from 'vue';    
-    import type { Bootstrap } from '../types/bootstrap';
-    import type { MyTeamInterface } from '../types/team';
+    import type { Bootstrap } from '../../types/bootstrap';
+    import type { MyTeamInterface } from '../../types/team';
 
     const props = defineProps<{
         bootstrap: Bootstrap,

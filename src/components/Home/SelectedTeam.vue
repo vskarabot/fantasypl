@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { Bootstrap } from '../types/bootstrap';
-import type { MyTeamInterface, Pick } from '../types/team';
-import Player from './Player.vue';
+    import { computed } from 'vue';
+    import type { Bootstrap } from '../../types/bootstrap';
+    import type { MyTeamInterface, Pick } from '../../types/team';
+    import Player from './Player.vue';
 
     const props = defineProps<{
         bootstrap: Bootstrap,

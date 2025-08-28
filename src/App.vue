@@ -1,105 +1,39 @@
-<script setup lang="ts">
-  import axios from 'axios';
-  import { onMounted, ref } from 'vue';
+<template>
+  <nav class="card">
+    <router-link class="rl" to="/" active-class="rl-selected">Home</router-link>
+    <router-link class="rl" to="/teams" active-class="rl-selected">Teams</router-link>
+  </nav>
 
-  import type { Bootstrap, Gameweek, Player, Team } from './types/bootstrap';
-  import type { MyTeamInterface } from './types/team';
+  <router-view v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component" />
+    </keep-alive>
+  </router-view>
+</template>
 
-  import SelectedTeam from './components/SelectedTeam.vue';
-  import SelectTeam from './components/SelectTeam.vue';
-  import Overview from './components/Overview.vue';
+<style scoped>
+  nav {
+    align-self: center;
+    gap: .5rem;
+    padding: .25rem;
+    border-radius: 5rem;
+    overflow: hidden; 
+    background: 
+      linear-gradient(to top right, #05f0ff, #943cff 60%);
 
-  /** 
-   *   bootstrap data i didnt use:
-   * - chips (names),
-   * - element_stats -> only label and names - wont need (probably),
-   * - element_types -> same,
-   * - phases - wont need,
-   */
-  const bootstrap = ref<Bootstrap>({
-    total_managers: 0,
-    players: {},
-    gameweeks: [],
-    currentGW: null,
-    teams: {}
-  });
-
-  const myTeam = ref<MyTeamInterface>({
-    active_chip: null,
-    automatic_subs: [],
-    entry_history: null,
-    picks: []
-  });
-
-  const selectedTeam = ref<{
-      id: string,
-      inputText: string
-  }>({
-      id: '',
-      inputText: ''
-  });
-
-  const error = ref<string>('');
-
-  const loadMyTeam = async(id: string) => {
-    try {
-      const res = await axios.get(import.meta.env.VITE_PROXY_URL + `https://fantasy.premierleague.com/api/entry/${id}/event/${bootstrap.value.currentGW?.id}/picks/`);
-
-      if (res.data.detail) {
-        error.value = `No team with input ID of ${id}`;
-        return;
-      }
-
-      error.value = '';
-      selectedTeam.value.id = id;
-      myTeam.value = res.data;
-    } catch (err: any) {
-      error.value = 'Team ID can only contain digits [0-9]!';
-    }
+    display: flex;
   }
 
-  onMounted(async () => {
-    const res = await axios.get(import.meta.env.VITE_PROXY_URL + 'https://fantasy.premierleague.com/api/bootstrap-static/');
-    if (res.status === 200) {
-      bootstrap.value.total_managers = res.data.total_players;
+  .rl {
+    padding: .75rem;
+    color: black;
+    font-weight: 600;
+    border-radius: 5rem;
+    border: 2px solid transparent;
+  }
 
-      bootstrap.value.gameweeks = res.data.events;
-      // current gw
-      bootstrap.value.currentGW = bootstrap.value.gameweeks.find((week: Gameweek) => week.is_current);
-
-      // alter data to use key: val instead of array of objects
-      // for some reason fpl returns jpg but uses png
-      bootstrap.value.players = Object.fromEntries(
-        res.data.elements.map((player: Player) => [
-          player.id, {
-            ...player, 
-            photo: 'https://resources.premierleague.com/premierleague25/photos/players/110x140/' + player.photo.split('.')[0] + '.png'
-          }
-        ])
-      );
-      
-      bootstrap.value.teams = Object.fromEntries(
-        res.data.teams.map((team: Team) => [team.id, team])
-      );
-    }
-    else {
-      console.log("Error fetching data from https://fantasy.premierleague.com/api/");
-    }
-
-  });
-
-</script>
-
-<template>
-  <Overview :bootstrap="bootstrap" :myTeam="myTeam" />
-  <SelectTeam
-    :error="error"
-    :selectedTeam="selectedTeam" 
-    @changeTeam="loadMyTeam" 
-  />
-  <SelectedTeam 
-    v-if="!error && selectedTeam.id" 
-    :bootstrap="bootstrap" 
-    :myTeam="myTeam" 
-  />  
-</template>
+  .rl-selected {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+</style>
