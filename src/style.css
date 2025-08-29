@@ -63,18 +63,29 @@ input, button {
   border: unset;
   outline: unset;
   padding: .25rem;
+
+  border: 1px solid #28002b;
+}
+
+input {
+  border-radius: 1rem;
+  text-align: center;
 }
 
 button {
   color: #28002b;
+  border-radius: 1rem;
+  padding: .5rem;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   transition: filter 0.1s;
-  background: #00FF87;
+  background-color: white;
 }
 button:not([disabled]):hover {
-  filter: drop-shadow(0 0 .25rem #00FF87);
+  filter: drop-shadow(0 .25rem .25rem #28002b);
+  background: #00FF87;
+  border-color: transparent;
 }
 button:focus,
 button:focus-visible {
@@ -117,9 +128,10 @@ button:focus-visible {
   padding: .5rem;
 
   border-radius: 1rem;
-  background-color: #28002b;
-
-  box-shadow: 5px 5px 10px #00000050;
+  background: 
+    linear-gradient(to right, #00FF87, #9b59b6);
+  box-shadow: 
+    0 .175rem 1rem #5f2675;
 }
 
 .title-live {

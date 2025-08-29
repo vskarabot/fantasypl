@@ -37,27 +37,23 @@
     <h2>Explore Teams</h2>
   <div class="card">
     <div class="creators">
-      <h4>{{ props.selectedTeam.id ? 'Selected Team' : 'Select a team' }}</h4>
-      <h3 class="team-title" v-if="selectedTeam.id">{{ selectedTeam.id }}</h3>
-
-      <hr>
+      
+      <h4 class="dark-text">Get team by ID:</h4>
       <div class="youtubers">
-        <span v-for="team of teamShortcuts" :key="team.id" @click="changeTeamID(team.id)">
+        <p v-for="team of teamShortcuts" :key="team.id" @click="changeTeamID(team.id)">
           {{ team.name }}
-        </span>
+        </p>
       </div>
 
       <br>
 
-      <span style="text-align: center;">or</span>
       <div class="id-setup">
-        <input id="input" type="text" v-model="selectedTeam.inputText" placeholder="Enter team ID" maxlength="8">
-        <button @click="changeTeamID(selectedTeam.inputText)">
+        <input id="input" type="text" v-model="props.selectedTeam.inputText" placeholder="Enter team ID" maxlength="8">
+        <button @click="changeTeamID(props.selectedTeam.inputText)">
             Confirm
         </button>
       </div>
-
-      <label for="input">{{ error }}</label>
+      <label for="input">{{ props.error }}</label>
 
     </div>
   </div>
@@ -78,27 +74,25 @@
     gap: .5rem;
   }
 
-  .youtubers span {
+  .youtubers p {
     padding: .5rem;
-    border-radius: .5rem;
-    border: 1px solid #00FF87;
+    border-radius: 1rem;
+
+    background: #28002b;
+    box-shadow: 0 .5rem 1rem #28002b;
   }
 
-  .youtubers span:hover {
+  .youtubers p:hover {
     cursor: pointer;
-    box-shadow: 0 0 5px #00FF87;
-  }
-
-  .team-title {
-    background: #00FF87;
-    align-self: flex-start;
-    color: #28002b;
-    padding: 0.25rem;
+    scale: 1.1;
   }
 
   label {
-    color: red;
     text-align: center;
     font-size: .75rem;
+  }
+
+  .dark-text {
+    color: #28002b;
   }
 </style>

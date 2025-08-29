@@ -6,7 +6,8 @@
 
     const props = defineProps<{
         bootstrap: Bootstrap,
-        myTeam: MyTeamInterface
+        myTeam: MyTeamInterface,
+        selectedTeamId: string
     }>();
 
     const playersByPosition = computed(() => {
@@ -31,6 +32,7 @@
 </script>
 
 <template>
+    <h2 v-if="props.selectedTeamId">Team {{ selectedTeamId }}</h2>
     <h4>Season Overview</h4>
     <div class="card" v-if="props.myTeam.entry_history">
         <div class="row-stat-item">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { computed } from 'vue';
-import type { Bootstrap } from '../../types/bootstrap';
+    import type { Bootstrap } from '../../types/bootstrap';
     import type { Pick } from '../../types/team';
 
     const props = defineProps<{
@@ -13,12 +13,30 @@ import type { Bootstrap } from '../../types/bootstrap';
         return props.player.multiplier > 0 ? basePoints * props.player.multiplier : basePoints;
     });
 
+    const playerBackground = computed(() => {
+        switch (props.bootstrap.players[props.player.element].chance_of_playing_next_round) {
+            case 0:
+                return '#b2002d';
+            case 50:
+                return '#ffab1b';
+            case 75:
+                return '#fbe772';
+            default:
+                return 'white';
+        }
+    });
+
 </script>
 
 <template>
     <div class="player-card">
         <img :src="props.bootstrap.players[player.element].photo" alt="" />
-        <div class="match-points">
+        <div 
+            class="match-points"
+            :style="{
+                backgroundColor: playerBackground
+            }"
+        >
             <div class="cap" v-if="props.player.is_captain || props.player.is_vice_captain">
                 {{ props.player.is_captain ? 'C' : 'V' }}
             </div>
@@ -50,7 +68,6 @@ import type { Bootstrap } from '../../types/bootstrap';
         align-self: stretch;
         text-align: center;
         color: black;
-        background-color: white;
         padding: .25rem;
         border-radius: .5rem;
         

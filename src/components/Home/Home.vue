@@ -101,5 +101,6 @@
     v-if="!error && selectedTeam.id" 
     :bootstrap="bootstrap" 
     :myTeam="myTeam" 
+    :selectedTeamId="selectedTeam.id"
   />  
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav class="card">
     <router-link class="rl" to="/" active-class="rl-selected">Home</router-link>
     <router-link class="rl" to="/teams" active-class="rl-selected">Teams</router-link>
     <router-link class="rl" to="/players" active-class="rl-selected">Players</router-link>
@@ -19,10 +19,7 @@
     padding: .25rem;
     border-radius: 5rem;
     overflow: hidden; 
-    background: 
-      linear-gradient(to right, #00FF87, #9b59b6);
-    box-shadow: 
-      0 0 1rem #5f2675;
+
     display: flex;
   }
 

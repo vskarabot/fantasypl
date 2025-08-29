@@ -27,21 +27,6 @@
         };
     })
 
-    const differential = computed(() => {
-        let maxVal = 0;
-        let player = null;
-        for (const p of Object.values(props.bootstrap.players)) {
-            const ownership = parseInt(p.selected_by_percent);
-            const points = p.event_points;
-            if (ownership > 0 && points / ownership > maxVal) {
-                maxVal = points / ownership;
-                player = p;
-            }
-        }
-
-        return { maxVal: '+' + maxVal + ' pts', player }
-    })
-
 </script>
 
 <template>
@@ -50,14 +35,14 @@
     </div>
 
     <div class="card hor-scroll" v-if="bootstrap.currentGW">
-        <!-- <div class="row-stat-item">
+        <div class="row-stat-item">
             <h3>{{ props.bootstrap.currentGW?.average_entry_score }} </h3>
             <span>Average Points</span>
         </div>
         <div class="row-stat-item">
             <h3>{{ props.bootstrap.currentGW?.highest_score }}</h3>
             <span>Highest points</span>
-        </div> -->
+        </div>
 
         <div class="row-stat-item">
             <h4 style="color: #00FF87;">POTW &#10026;</h4>
@@ -70,12 +55,6 @@
             <img :src="bestValForMoney.player?.photo">
             <div class="points-holder">{{ bestValForMoney.maxVal }}</div>
             {{ bestValForMoney.player?.web_name }}
-        </div>
-        <div class="row-stat-item">
-            <h4>DIFFERENTIAL</h4>
-            <img :src="differential.player?.photo">
-            <div class="points-holder">{{ differential.maxVal }}</div>
-            {{ differential.player?.web_name }}
         </div>
 
         <div class="row-stat-item">
