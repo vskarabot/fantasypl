@@ -34,7 +34,7 @@
 </script>
 
 <template>
-    <h2>Explore Teams</h2>
+  <h2>Explore Teams</h2>
   <div class="card">
     <div class="creators">
       

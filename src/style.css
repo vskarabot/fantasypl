@@ -119,13 +119,15 @@ button:focus-visible {
 }
 
 .row-stat-item img {
-  max-width: 7rem;
+  max-width: 6rem;
 }
 
 .card {
   display: flex;
   gap: 1rem;
   padding: .5rem;
+
+  flex-wrap: wrap;
 
   border-radius: 1rem;
   background: 

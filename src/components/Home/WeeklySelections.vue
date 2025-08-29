@@ -34,7 +34,7 @@
         <h2>Gameweek {{ props.bootstrap.currentGW?.id }}</h2>
     </div>
 
-    <div class="card hor-scroll" v-if="bootstrap.currentGW">
+    <div class="card" v-if="bootstrap.currentGW">
         <div class="row-stat-item">
             <h3>{{ props.bootstrap.currentGW?.average_entry_score }} </h3>
             <span>Average Points</span>
@@ -73,9 +73,3 @@
         </div>
     </div>
 </template>
-
-<style scoped>
-    .hor-scroll {
-        overflow: scroll;
-    }
-</style>

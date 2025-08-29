@@ -90,7 +90,6 @@
 <style scoped>
     .card-team {
         position: relative;
-        height: 50rem;
         overflow: hidden;
         flex-direction: column;
     }
@@ -100,9 +99,6 @@
         box-sizing: border-box;
         left: 0;
         width: 100%;
-    }
-
-    .field {
         top: 0;
         height: 100%;
         background: radial-gradient(circle at 50% 200%, green, rgb(0, 44, 0));
@@ -146,7 +142,7 @@
 
         display: flex;
         flex-direction: column;
-        gap: .5rem;
+        gap: 2rem;
     }
 
     .details {
@@ -169,7 +165,15 @@
     }
 
     .position:last-child {
-        background: linear-gradient(transparent, #ffffff50, transparent);
+        border-radius: 1rem 1rem 0rem 0rem;
+        background: linear-gradient(#ffffffc0, transparent);
+    }
+
+    .position:last-child::before {
+        content: 'Subs';
+        padding: .5rem;
+        border-radius: 0.5rem;
+        background: #28002b;
     }
 
 </style>

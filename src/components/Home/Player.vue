@@ -50,11 +50,15 @@
 
 <style scoped>
     .player-card {
+        background: 
+            linear-gradient(transparent, white);
+        border-radius: .5rem;
+
         display: flex;
         flex-direction: column;
         align-items: center;
         align-self: flex-end;
-        gap: .5rem;
+
         width: 15%;
     }
 
