@@ -8,6 +8,7 @@
   import SelectedTeam from './SelectedTeam.vue';
   import SelectTeam from './SelectTeam.vue';
   import WeeklySelections from './WeeklySelections.vue';
+import LeagueStandings from './LeagueStandings.vue';
 
   /** 
    *   bootstrap data i didnt use:
@@ -103,4 +104,8 @@
     :myTeam="myTeam" 
     :selectedTeamId="selectedTeam.id"
   />  
+  <LeagueStandings
+    v-if="!error && selectedTeam.id"
+    :selectedTeamId="selectedTeam.id"
+  />
 </template>

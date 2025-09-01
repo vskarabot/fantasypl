@@ -103,7 +103,7 @@ button:focus-visible {
 
 /* custom */
 .row-stat-item {
-  flex: 1 1 0;
+  flex: auto;
 
   display: flex;
   flex-direction: column;

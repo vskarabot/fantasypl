@@ -65,11 +65,5 @@
             </div>
             {{ bootstrap.players[bootstrap.currentGW.most_captained].web_name }}
         </div>
-        <div class="row-stat-item">
-            <h4>MOST OWNED</h4>
-            <img :src="bootstrap.players[bootstrap.currentGW.most_selected].photo">
-            <div class="points-holder white">{{ bootstrap.players[bootstrap.currentGW.most_selected].event_points }} pts</div>
-            {{ bootstrap.players[bootstrap.currentGW.most_selected].web_name }}
-        </div>
     </div>
 </template>
