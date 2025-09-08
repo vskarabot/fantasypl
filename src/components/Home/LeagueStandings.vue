@@ -69,8 +69,7 @@ import Dot from '../Base/Dot.vue';
     <h4>League Ranks</h4>
     <div v-if="!error && leaguesData" class="card">
         <div v-for="league in leaguesData.leagues" class="row-stat-item">
-            <h4>{{ league.entry_rank.toLocaleString('de-DE') }}</h4>
-
+            <h4>{{ league.entry_rank ? league.entry_rank.toLocaleString('de-DE') : 'TBA' }}</h4>
             <Dot :newRank="league.entry_rank" :oldRank="league.entry_last_rank" />
             <span>{{ league.name }}</span>
         </div>
