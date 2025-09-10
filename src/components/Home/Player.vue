@@ -51,20 +51,19 @@
 <style scoped>
     .player-card {
         background: 
-            linear-gradient(transparent, white);
+            linear-gradient(white, transparent, white);
         border-radius: .5rem;
 
         display: flex;
         flex-direction: column;
         align-items: center;
-        align-self: flex-end;
 
-        width: 15%;
+        min-width: 60px;
     }
 
     img {
-        width: 50%;
-        height: auto;
+        width: auto;
+        height: 10vh;
     }
 
     .match-points {

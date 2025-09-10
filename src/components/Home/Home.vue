@@ -7,8 +7,6 @@
 
   import SelectedTeam from './SelectedTeam.vue';
   import SelectTeam from './SelectTeam.vue';
-  import WeeklySelections from './WeeklySelections.vue';
-import LeagueStandings from './LeagueStandings.vue';
 
   /** 
    *   bootstrap data i didnt use:
@@ -92,20 +90,31 @@ import LeagueStandings from './LeagueStandings.vue';
 </script>
 
 <template>
-  <WeeklySelections :bootstrap="bootstrap" :myTeam="myTeam" />
-  <SelectTeam
-    :error="error"
-    :selectedTeam="selectedTeam" 
-    @changeTeam="loadMyTeam" 
-  />
-  <SelectedTeam 
-    v-if="!error && selectedTeam.id" 
-    :bootstrap="bootstrap" 
-    :myTeam="myTeam" 
-    :selectedTeamId="selectedTeam.id"
-  />  
-  <LeagueStandings
-    v-if="!error && selectedTeam.id"
-    :selectedTeamId="selectedTeam.id"
-  />
+  <div class="container">
+    <SelectTeam
+      :error="error"
+      :selectedTeam="selectedTeam" 
+      @changeTeam="loadMyTeam" 
+    />
+    <SelectedTeam 
+      v-if="!error && selectedTeam.id" 
+      :bootstrap="bootstrap" 
+      :myTeam="myTeam" 
+      :selectedTeamId="selectedTeam.id"
+    />  
+  </div>
 </template>
+
+<style scoped>
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .container {
+      flex-direction: row;
+    }
+  }
+</style>

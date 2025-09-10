@@ -9,7 +9,7 @@
   font-weight: 400;
 
   color: #ffffff;
-  background-color: #1e0021;
+  background-color: #05090b;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -32,11 +32,17 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
   min-height: 100vh;
 
   display: flex;
   justify-content: center;
+}
+
+#app {
+  padding: 4rem 0;
+
+  max-width: 1280px;
+  flex: 1;
 }
 
 hr {
@@ -63,77 +69,57 @@ input, button {
   border: unset;
   outline: unset;
   padding: .25rem;
-
-  border: 1px solid #28002b;
+  background-color: #333a3f;
+  color: white;
 }
 
 input {
-  border-radius: 1rem;
   text-align: center;
 }
 
 button {
-  color: #28002b;
-  border-radius: 1rem;
-  padding: .5rem;
+  color: white;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   transition: filter 0.1s;
-  background-color: white;
 }
 button:not([disabled]):hover {
-  filter: drop-shadow(0 .25rem .25rem #28002b);
-  background: #00FF87;
-  border-color: transparent;
+  background: #787c80;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-#app {
-  max-width: 720px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 
 /* custom */
 .row-stat-item {
-  flex: auto;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   
-  padding: 1rem;
-  border-radius: 1rem;
+  border-radius: .5rem;
   gap: .5rem;
-  border: 1px solid #41054b;
+  padding: .5rem;
 
-  background-color: #28002b;
-}
-
-.row-stat-item img {
-  max-width: 6rem;
+  background-color: #1d2022;
 }
 
 .card {
   display: flex;
-  gap: 1rem;
+  gap: .5rem;
   padding: .5rem;
 
   flex-wrap: wrap;
+  justify-content: center;
 
-  border-radius: 1rem;
+  border-radius: .5rem;
+  border: 1px solid transparent;
   background: 
-    linear-gradient(to right, #00FF87, #9b59b6);
-  box-shadow: 
-    0 .175rem 1rem #5f2675;
+    linear-gradient(#111517, #111517) padding-box,
+    linear-gradient(#333a3f, #333a3f) border-box;
 }
 
 .title-live {
@@ -159,7 +145,7 @@ button:focus-visible {
 }
 
 .points-holder {
-  color: #28002b;
+  color: black;
   background: #00FF87;
   padding: .25rem .375rem;
   align-self: center;

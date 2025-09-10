@@ -32,9 +32,6 @@
 </script>
 
 <template>
-    <h2 v-if="props.selectedTeamId">Team {{ selectedTeamId }}</h2>
-
-    <h4 v-if="props.myTeam.entry_history">Gameweek {{ bootstrap.currentGW?.id }} Squad</h4>
     <div class="card card-team" v-if="props.myTeam.entry_history">
         <div class="field">
             <div class="half-circle"></div>
@@ -71,8 +68,10 @@
 <style scoped>
     .card-team {
         position: relative;
-        overflow: hidden;
         flex-direction: column;
+
+        overflow: hidden;
+        flex: 3;
     }
 
     .field {
@@ -84,7 +83,7 @@
         height: 100%;
         background: radial-gradient(circle at 50% 200%, green, rgb(0, 44, 0));
         border: 5px solid white;
-        transform: perspective(600px) rotateX(40deg);
+        transform: translateY(-15%) perspective(200px) rotateX(20deg);
     }
 
     .half-line, .half-circle {
@@ -119,7 +118,6 @@
 
     .squad-canvas {
         opacity: .95;
-        flex: 1;
 
         display: flex;
         flex-direction: column;
@@ -127,13 +125,14 @@
     }
 
     .details {
+        align-self: center;
         height: max-content;
-        opacity: .95;
-        box-shadow: none;
 
         display: flex;
         flex-direction: row;
         gap: 1rem;
+
+        z-index: 10;
     }
 
     /** each position row (gk, df, mid, st, bench) */
@@ -148,13 +147,6 @@
     .position:last-child {
         border-radius: 1rem 1rem 0rem 0rem;
         background: linear-gradient(#ffffffc0, transparent);
-    }
-
-    .position:last-child::before {
-        content: 'Subs';
-        padding: .5rem;
-        border-radius: 0.5rem;
-        background: #28002b;
     }
 
 </style>

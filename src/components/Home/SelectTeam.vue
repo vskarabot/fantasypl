@@ -34,11 +34,9 @@
 </script>
 
 <template>
-  <h2>Explore Teams</h2>
   <div class="card">
     <div class="creators">
       
-      <h4 class="dark-text">Get team by ID:</h4>
       <div class="youtubers">
         <p v-for="team of teamShortcuts" :key="team.id" @click="changeTeamID(team.id)">
           {{ team.name }}
@@ -50,7 +48,7 @@
       <div class="id-setup">
         <input id="input" type="text" v-model="props.selectedTeam.inputText" placeholder="Enter team ID" maxlength="8">
         <button @click="changeTeamID(props.selectedTeam.inputText)">
-            Confirm
+            &#128269;
         </button>
       </div>
       <label for="input">{{ props.error }}</label>
@@ -60,6 +58,13 @@
 </template>
 
 <style scoped>
+  .card {
+    flex-direction: column;
+    gap: 1rem;  
+
+    flex: 2;
+  }
+
   .creators {
     flex: 1;
     display: flex;
@@ -71,20 +76,28 @@
   .id-setup, .youtubers {
     display: flex;
     justify-content: center;
+  }
+
+  .id-setup {
+    border-radius: 1rem;
+    overflow: hidden;
+    max-width: max-content;
+    align-self: center;
+  }
+
+  .youtubers {
     gap: .5rem;
   }
 
   .youtubers p {
     padding: .5rem;
-    border-radius: 1rem;
-
-    background: #28002b;
-    box-shadow: 0 .5rem 1rem #28002b;
+    border-radius: .5rem;
+    border: 1px solid #333a3f;
   }
 
   .youtubers p:hover {
     cursor: pointer;
-    scale: 1.1;
+    background-color: #333a3f;
   }
 
   label {
