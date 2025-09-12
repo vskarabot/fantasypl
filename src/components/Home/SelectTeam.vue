@@ -1,6 +1,9 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
-    import type { TIDChip } from '../../types/chiptid';
+  import { ref, watch } from 'vue';
+  import type { TIDChip } from '../../types/chiptid';
+  import axios from 'axios';
+  import type { LeagueEntry } from '../../types/leagues';
+  import RankProgress from '../Base/RankProgress.vue';
 
     const emit = defineEmits(['changeTeam']);
 
@@ -11,6 +14,8 @@
         },
         error: string
     }>();
+
+    const userTeamData = ref<LeagueEntry>();
 
     /**
      * yt creator ids:
@@ -30,6 +35,18 @@
     const changeTeamID = (id: string) => {
       emit("changeTeam", id);
     }
+
+    watch(() => props.selectedTeam.id, async (id) => {
+      if (id) {
+        const userData = await axios.get(import.meta.env.VITE_PROXY_URL + `https://fantasy.premierleague.com/api/entry/${id}/`);
+        if (userData.data) {
+          userTeamData.value = {
+            ...userData.data,
+            leagues: userData.data.leagues.classic
+          };
+        }
+      }
+    });
 
 </script>
 
@@ -54,19 +71,84 @@
       <label for="input">{{ props.error }}</label>
 
     </div>
+
+    <hr v-if="userTeamData">
+
+    <div class="card" style="border: none;" v-if="userTeamData">
+      <div class="row-stat-item title">
+        <h3>
+          {{ userTeamData.player_first_name + " " + userTeamData.player_last_name }}
+        </h3>        
+      </div>
+
+
+      <div class="card details">
+        <div class="row-stat-item">
+          <h4>{{ userTeamData.summary_event_points }}</h4>
+          <span>Event points</span>
+        </div>
+        <div class="row-stat-item">
+          <h4>{{ userTeamData.summary_overall_points }}</h4>
+          <span>Overall points</span>
+        </div>
+        <div class="row-stat-item">
+          <h4>{{ userTeamData.summary_event_rank.toLocaleString('de-DE') }}</h4>
+          <span>Event rank</span>
+        </div>
+        <div class="row-stat-item">
+          <h4>{{ userTeamData.summary_overall_rank.toLocaleString('de-DE') }}</h4>
+          <span>Overall rank</span>
+        </div>
+      </div>
+
+      <hr>
+
+      <div v-for="league of userTeamData.leagues" class="row-stat-item leagues">
+        <div class="arrow-lname">
+          <RankProgress :rank="league.entry_rank - league.entry_last_rank" />
+          <span>{{ league.name }}</span>
+        </div>
+        <span>{{ league.entry_rank.toLocaleString('de-DE') }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
+
+  .leagues {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .arrow-lname {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+  }
+
+  .title {
+    background-color: transparent;
+    align-self: flex-start;
+  }
+
   .card {
     flex-direction: column;
-    gap: 1rem;  
 
+    justify-content: flex-start;
     flex: 2;
   }
 
+
+  .details {
+    flex: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border: none;
+  }
+
   .creators {
-    flex: 1;
     display: flex;
     flex-direction: column;
 

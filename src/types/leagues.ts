@@ -19,5 +19,6 @@ export interface LeagueEntry {
     summary_event_points: number,
     summary_event_rank: number,
     current_event: number,
+    name: string,
     leagues: League[]
 }

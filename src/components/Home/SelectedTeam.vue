@@ -121,7 +121,7 @@
 
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 1rem;
     }
 
     .details {
@@ -145,7 +145,7 @@
     }
 
     .position:last-child {
-        border-radius: 1rem 1rem 0rem 0rem;
+        border-radius: 1rem 1rem;
         background: linear-gradient(#ffffffc0, transparent);
     }
 

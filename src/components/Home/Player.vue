@@ -58,12 +58,21 @@
         flex-direction: column;
         align-items: center;
 
-        min-width: 60px;
+        min-width: 3rem;
     }
 
     img {
         width: auto;
-        height: 10vh;
+        height: 8vh;
+    }
+
+    @media screen and (min-width: 768px) {
+        .player-card {
+            min-width: 5rem;
+        }
+        img {
+            height: 12vh;
+        }
     }
 
     .match-points {
