@@ -75,35 +75,31 @@
     <hr v-if="userTeamData">
 
     <div class="card" style="border: none;" v-if="userTeamData">
-      <div class="row-stat-item title">
-        <h3>
-          {{ userTeamData.player_first_name + " " + userTeamData.player_last_name }}
-        </h3>        
+      <div class="title">
+        <h4>{{ userTeamData.player_first_name  + " " + userTeamData.player_last_name }}</h4>
+        <span>{{ userTeamData.player_region_name }}</span>
       </div>
 
-
-      <div class="card details">
-        <div class="row-stat-item">
-          <h4>{{ userTeamData.summary_event_points }}</h4>
-          <span>Event points</span>
-        </div>
-        <div class="row-stat-item">
-          <h4>{{ userTeamData.summary_overall_points }}</h4>
-          <span>Overall points</span>
-        </div>
-        <div class="row-stat-item">
-          <h4>{{ userTeamData.summary_event_rank.toLocaleString('de-DE') }}</h4>
-          <span>Event rank</span>
-        </div>
-        <div class="row-stat-item">
-          <h4>{{ userTeamData.summary_overall_rank.toLocaleString('de-DE') }}</h4>
-          <span>Overall rank</span>
-        </div>
+      <div class="row-stat-item details">
+        <span>Event points</span>
+        <span>{{ userTeamData.summary_event_points }}</span>
+      </div>
+      <div class="row-stat-item details">
+        <span>Overall points</span>
+        <span>{{ userTeamData.summary_overall_points }}</span>
+      </div>
+      <div class="row-stat-item details">
+        <span>Event rank</span>
+        <span>{{ userTeamData.summary_event_rank.toLocaleString('de-DE') }}</span>
+      </div>
+      <div class="row-stat-item details">
+        <span>Overall rank</span>
+        <span>{{ userTeamData.summary_overall_rank.toLocaleString('de-DE') }}</span>
       </div>
 
       <hr>
-
-      <div v-for="league of userTeamData.leagues" class="row-stat-item leagues">
+      <h4>League Standings</h4>
+      <div v-for="league of userTeamData.leagues" class="row-stat-item details">
         <div class="arrow-lname">
           <RankProgress :rank="league.entry_rank - league.entry_last_rank" />
           <span>{{ league.name }}</span>
@@ -116,7 +112,7 @@
 
 <style scoped>
 
-  .leagues {
+  .details {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -131,6 +127,7 @@
   .title {
     background-color: transparent;
     align-self: flex-start;
+    padding: 0;
   }
 
   .card {
@@ -138,14 +135,6 @@
 
     justify-content: flex-start;
     flex: 2;
-  }
-
-
-  .details {
-    flex: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    border: none;
   }
 
   .creators {

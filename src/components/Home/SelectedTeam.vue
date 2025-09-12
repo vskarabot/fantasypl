@@ -38,25 +38,6 @@
             <div class="half-line"></div>
             <div class="box-16"></div>
         </div>
-        <div class="details">
-            <div class="row-stat-item">
-                <h3>{{ props.myTeam.entry_history.points }}</h3>
-                <span v-if="!props.bootstrap.currentGW?.finished" class="live-dot"></span>
-                <span>{{ !props.bootstrap.currentGW?.finished ? 'Live Points' : 'Final Points' }}</span>
-            </div>
-            <div class="row-stat-item">
-                <h3>{{ props.myTeam.entry_history.points_on_bench }}</h3>
-                <span>Bench Points</span>
-            </div>
-            <div class="row-stat-item">
-                <h3>{{ props.myTeam.active_chip ? props.myTeam.active_chip : '/' }}</h3>
-                <span>Chip Used</span>
-            </div>
-            <div class="row-stat-item">
-                <h3>{{ rankFormat(props.myTeam.entry_history.rank) }}</h3>
-                <span>GW Rank</span>
-            </div>
-        </div>
         <div class="squad-canvas">
             <div v-for="(pick, i) in playersByPosition" class="position" :key="i">
                 <Player v-for="player in pick" :player="player" :bootstrap="bootstrap" />
