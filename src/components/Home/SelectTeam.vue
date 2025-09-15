@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue';
-  import type { TIDChip } from '../../types/chiptid';
+  import type { IdPlayerName } from '../../types/idplayername';
   import axios from 'axios';
   import type { LeagueEntry } from '../../types/leagues';
   import RankProgress from '../Base/RankProgress.vue';
@@ -24,7 +24,7 @@
      * - harry -> 1320 
      * - raptor -> 1587
     */
-    const teamShortcuts = ref<TIDChip[]>([
+    const teamShortcuts = ref<IdPlayerName[]>([
         { id: "2776065", name: "Me"},
         { id: "44", name: "Let's Talk FPL" },
         { id: "200", name: "FPL Focal" },
@@ -74,12 +74,17 @@
 
     <hr v-if="userTeamData">
 
+
     <div class="card" style="border: none;" v-if="userTeamData">
       <div class="title">
         <h4>{{ userTeamData.player_first_name  + " " + userTeamData.player_last_name }}</h4>
         <span>{{ userTeamData.player_region_name }}</span>
       </div>
 
+      <br>
+      <hr>
+
+      <h5>Points Overview</h5>
       <div class="row-stat-item details">
         <span>Event points</span>
         <span>{{ userTeamData.summary_event_points }}</span>
@@ -97,14 +102,19 @@
         <span>{{ userTeamData.summary_overall_rank.toLocaleString('de-DE') }}</span>
       </div>
 
+      <br>
       <hr>
-      <h4>League Standings</h4>
+      <h5>League Standings</h5>
       <div v-for="league of userTeamData.leagues" class="row-stat-item details">
         <div class="arrow-lname">
           <RankProgress :rank="league.entry_rank - league.entry_last_rank" />
           <span>{{ league.name }}</span>
         </div>
-        <span>{{ league.entry_rank.toLocaleString('de-DE') }}</span>
+        <span>
+          <span style="color: #a0a0a0; font-size: .75rem;">{{ league.entry_last_rank.toLocaleString('de-DE') }}</span>
+          →
+          {{ league.entry_rank.toLocaleString('de-DE') }} 
+        </span>
       </div>
     </div>
   </div>

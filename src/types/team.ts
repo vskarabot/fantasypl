@@ -35,3 +35,10 @@ export interface MyTeamInterface {
     entry_history: EntryHistory | null,
     picks: Pick[]
 }
+
+
+
+export interface ChipFullDetails {
+    name: string, 
+    icon: string
+}

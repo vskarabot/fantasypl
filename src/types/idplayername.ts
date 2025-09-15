@@ -1,4 +1,4 @@
-export interface TIDChip {
+export interface IdPlayerName {
     id: string, 
     name: string
 }

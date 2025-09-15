@@ -3,12 +3,15 @@
     import type { Bootstrap } from '../../types/bootstrap';
     import type { MyTeamInterface, Pick } from '../../types/team';
     import Player from './Player.vue';
+import { chips } from '../../constants';
 
     const props = defineProps<{
         bootstrap: Bootstrap,
         myTeam: MyTeamInterface,
         selectedTeamId: string
     }>();
+
+    console.log(props.myTeam);
 
     const playersByPosition = computed(() => {
         
@@ -24,10 +27,6 @@
 
         return pbp;
     });
-
-    const rankFormat = (rank: number) => {
-        return rank.toLocaleString('de-DE');
-    };
     
 </script>
 
@@ -38,6 +37,32 @@
             <div class="half-line"></div>
             <div class="box-16"></div>
         </div>
+
+        <div class="card">
+            <div v-if="props.myTeam.active_chip && chips[props.myTeam.active_chip]" class="row-stat-item">
+                <img class="chip-icon" :src=chips[props.myTeam.active_chip].icon>
+                <span>{{ chips[props.myTeam.active_chip].name }} Played</span>
+            </div>
+            <div class="row-stat-item">
+                <h4>{{ props.myTeam.entry_history.value / 10 }}£</h4>
+                <span>Team Value</span>
+            </div>
+            <div class="row-stat-item">
+                <h4>{{ props.myTeam.entry_history.bank / 10 }}£</h4>
+                <span>In the Bank</span>
+            </div>
+            <div class="row-stat-item">
+                <h4>{{ props.myTeam.entry_history.event_transfers }}</h4>
+                <span>Event Transfers</span>
+            </div>
+            <div
+                class="row-stat-item"
+            >
+                <h4>{{ props.myTeam.entry_history.event_transfers_cost }}</h4>
+                <span>Transfers Cost</span>
+            </div>
+        </div>
+
         <div class="squad-canvas">
             <div v-for="(pick, i) in playersByPosition" class="position" :key="i">
                 <Player v-for="player in pick" :player="player" :bootstrap="bootstrap" />
@@ -47,9 +72,19 @@
 </template>
 
 <style scoped>
+    .card {
+        border: none;
+    }
+
+    .row-stat-item {
+        border: 1px solid #333a3f;
+    }
+
     .card-team {
         position: relative;
         flex-direction: column;
+        height: max-content;
+        justify-content: flex-start;
 
         overflow: hidden;
         flex: 3;
@@ -128,6 +163,13 @@
     .position:last-child {
         border-radius: 1rem 1rem;
         background: linear-gradient(#ffffffc0, transparent);
+    }
+
+
+
+    .chip-icon {
+        max-width: 1rem;
+        aspect-ratio: 1 / 1;
     }
 
 </style>
