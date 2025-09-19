@@ -26,6 +26,7 @@
     */
     const teamShortcuts = ref<IdPlayerName[]>([
         { id: "2776065", name: "Me"},
+        { id: "7656299", name: "Nik"},
         { id: "44", name: "Let's Talk FPL" },
         { id: "200", name: "FPL Focal" },
         { id: "1320", name: "FPL Harry"},
@@ -145,6 +146,8 @@
 
     justify-content: flex-start;
     flex: 2;
+
+    max-width: 768px;
   }
 
   .creators {
@@ -189,4 +192,5 @@
   .dark-text {
     color: #28002b;
   }
+
 </style>

@@ -31,14 +31,8 @@ import { chips } from '../../constants';
 </script>
 
 <template>
-    <div class="card card-team" v-if="props.myTeam.entry_history">
-        <div class="field">
-            <div class="half-circle"></div>
-            <div class="half-line"></div>
-            <div class="box-16"></div>
-        </div>
-
-        <div class="card">
+    <div class="my-team">
+        <div class="card" v-if="props.myTeam.entry_history">
             <div v-if="props.myTeam.active_chip && chips[props.myTeam.active_chip]" class="row-stat-item">
                 <img class="chip-icon" :src=chips[props.myTeam.active_chip].icon>
                 <span>{{ chips[props.myTeam.active_chip].name }} Played</span>
@@ -63,17 +57,29 @@ import { chips } from '../../constants';
             </div>
         </div>
 
-        <div class="squad-canvas">
-            <div v-for="(pick, i) in playersByPosition" class="position" :key="i">
-                <Player v-for="player in pick" :player="player" :bootstrap="bootstrap" />
+        <div class="card card-team" v-if="props.myTeam.entry_history">
+            <div class="field">
+                <div class="half-circle"></div>
+                <div class="half-line"></div>
+                <div class="box-16"></div>
+            </div>
+
+            <div class="squad-canvas">
+                <div v-for="(pick, i) in playersByPosition" class="position" :key="i">
+                    <Player v-for="player in pick" :player="player" :bootstrap="bootstrap" />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-    .card {
-        border: none;
+
+    .my-team {
+        flex: 3;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
     }
 
     .row-stat-item {
@@ -81,13 +87,15 @@ import { chips } from '../../constants';
     }
 
     .card-team {
+        background: 
+            linear-gradient(rgb(69, 181, 225)) padding-box,
+            linear-gradient(#333a3f) border-box;
         position: relative;
         flex-direction: column;
         height: max-content;
         justify-content: flex-start;
 
         overflow: hidden;
-        flex: 3;
     }
 
     .field {
@@ -97,7 +105,7 @@ import { chips } from '../../constants';
         width: 100%;
         top: 0;
         height: 100%;
-        background: radial-gradient(circle at 50% 200%, green, rgb(0, 44, 0));
+        background: radial-gradient(circle at 50% 200%, rgb(111, 195, 111), rgb(0, 101, 0));
         border: 5px solid white;
         transform: translateY(-15%) perspective(200px) rotateX(20deg);
     }
@@ -161,8 +169,8 @@ import { chips } from '../../constants';
     }
 
     .position:last-child {
-        border-radius: 1rem 1rem;
-        background: linear-gradient(#ffffffc0, transparent);
+        background: linear-gradient(white, transparent);
+        padding: .5rem;
     }
 
 

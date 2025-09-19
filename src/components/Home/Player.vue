@@ -22,7 +22,24 @@
             case 75:
                 return '#fbe772';
             default:
-                return 'white';
+                return '#fff';
+        }
+    });
+
+    const position = computed(() => {
+        if (props.player.position > 11) {
+            switch (props.player.element_type) {
+                case 1:
+                    return 'GKP';
+                case 2:
+                    return 'DEF';
+                case 3:
+                    return 'MID';
+                case 4: 
+                    return 'FWD';
+                default:
+                    return '';
+            }
         }
     });
 
@@ -30,17 +47,22 @@
 
 <template>
     <div class="player-card">
+        <span class="bench-pos">{{ position }}</span>    
         <img :src="props.bootstrap.players[player.element].photo" alt="" />
         <div 
             class="match-points"
             :style="{
-                backgroundColor: playerBackground
+                color: playerBackground
             }"
         >
-            <div class="cap" v-if="props.player.is_captain || props.player.is_vice_captain">
-                {{ props.player.is_captain ? 'C' : 'V' }}
-            </div>
-            <span>{{ props.bootstrap.players[props.player.element].web_name }}</span>
+            <p style="font-style: normal;">
+                {{ props.bootstrap.players[props.player.element].web_name }}
+                <span class="cap" v-if="props.player.is_captain || props.player.is_vice_captain">
+                    {{ props.player.is_captain ? 'C' : 'vc' }}
+                </span>
+            </p>
+           
+            <hr>
             <p class="player-points">
                 {{ playerPoints }}
             </p>
@@ -50,64 +72,63 @@
 
 <style scoped>
     .player-card {
-        background: 
-            linear-gradient(white, transparent, white);
-        border-radius: .5rem;
-
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        min-width: 3rem;
+        background: 
+            linear-gradient(#05090b, #333a3f, #05090b);
+
+        border-radius: .5rem;
+
+        width: clamp(5rem, 10vw, 8rem);
+        white-space: nowrap;
+        overflow: hidden;
+
+        position: relative;
     }
 
     img {
         width: auto;
-        height: 8vh;
-    }
-
-    @media screen and (min-width: 768px) {
-        .player-card {
-            min-width: 5rem;
-        }
-        img {
-            height: 12vh;
-        }
+        height: clamp(2rem, 10vw, 6rem);
     }
 
     .match-points {
-        position: relative;
         align-self: stretch;
         text-align: center;
-        color: black;
-        padding: .25rem;
-        border-radius: .5rem;
+        color: white;
+        background: #05090b;
         
         display: flex;
         flex-direction: column;
-        gap: .5rem;
+        padding: .375rem 0;
+        gap: .375rem;
+
+        font-size: clamp(.5rem, 2vw, 1rem);
+        font-weight: 600;
     }
 
     .player-points {
-        background-color: #28002b;
-        color: white;
-        padding: .25rem;
-        font-weight: 600;
         border-radius: 0 0 .3rem .3rem;
+    }
+
+
+    .cap, .bench-pos {
+        font-weight: 600;
+        padding: .25rem .5rem;
+        text-decoration: underline;
     }
 
     .cap {
         position: absolute;
         top: 0;
-        right: 0;
-        transform: translate(50%, -50%);
-        
-        font-size: .75rem;
-        font-weight: 900;
-        color: white;
-
-        background: #28002b;
-
-        padding: .275rem;
+        left: 0;
     }
+
+    .bench-pos {
+        align-self: flex-start;
+        font-size: .75rem;
+        font-weight: 600;
+    }
+
 </style>

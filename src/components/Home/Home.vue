@@ -109,6 +109,7 @@
   .container {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 1rem;
   }
 
