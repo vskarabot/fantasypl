@@ -13,8 +13,8 @@ export const chips: {[key: string]: ChipFullDetails} = {
         name: 'Triple Captain',
         icon: 'https://fantasy.premierleague.com/img/chips/3xc-120.png'
     },
-    bbost: {
+    bboost: {
         name: 'Bench Boost',
-        icon: 'https://fantasy.premierleague.com/img/chips/bbost-120.png'
+        icon: 'https://fantasy.premierleague.com/img/chips/bboost-120.png'
     },
 }; 

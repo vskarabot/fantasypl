@@ -11,13 +11,11 @@ import { chips } from '../../constants';
         selectedTeamId: string
     }>();
 
-    console.log(props.myTeam);
-
     const playersByPosition = computed(() => {
         
         const pbp: Pick[][] = [[],[],[],[],[]];
         props.myTeam.picks.map((pick: Pick) => {
-            if (pick.position <= 11) {
+            if (props.myTeam.active_chip && props.myTeam.active_chip === 'bboost' || pick.position <= 11) {
                 pbp[pick.element_type - 1].push(pick);
             }
             else {
@@ -36,6 +34,10 @@ import { chips } from '../../constants';
             <div v-if="props.myTeam.active_chip && chips[props.myTeam.active_chip]" class="row-stat-item">
                 <img class="chip-icon" :src=chips[props.myTeam.active_chip].icon>
                 <span>{{ chips[props.myTeam.active_chip].name }} Played</span>
+            </div>
+            <div class="row-stat-item">
+                <h4>{{ props.myTeam.entry_history.points }}</h4>
+                <span>Event Points</span>
             </div>
             <div class="row-stat-item">
                 <h4>{{ props.myTeam.entry_history.value / 10 }}£</h4>

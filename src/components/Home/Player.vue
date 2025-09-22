@@ -26,28 +26,10 @@
         }
     });
 
-    const position = computed(() => {
-        if (props.player.position > 11) {
-            switch (props.player.element_type) {
-                case 1:
-                    return 'GKP';
-                case 2:
-                    return 'DEF';
-                case 3:
-                    return 'MID';
-                case 4: 
-                    return 'FWD';
-                default:
-                    return '';
-            }
-        }
-    });
-
 </script>
 
 <template>
     <div class="player-card">
-        <span class="bench-pos">{{ position }}</span>    
         <img :src="props.bootstrap.players[player.element].photo" alt="" />
         <div 
             class="match-points"
@@ -80,6 +62,7 @@
             linear-gradient(#05090b, #333a3f, #05090b);
 
         border-radius: .5rem;
+        padding-top: .5rem;
 
         width: clamp(5rem, 10vw, 8rem);
         white-space: nowrap;

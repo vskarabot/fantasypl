@@ -4,6 +4,7 @@
   import axios from 'axios';
   import type { LeagueEntry } from '../../types/leagues';
   import RankProgress from '../Base/RankProgress.vue';
+  import TeamProgress from './TeamProgress.vue';
 
     const emit = defineEmits(['changeTeam']);
 
@@ -55,6 +56,7 @@
   <div class="card">
     <div class="creators">
       
+      <h5>Select team</h5>
       <div class="youtubers">
         <p v-for="team of teamShortcuts" :key="team.id" @click="changeTeamID(team.id)">
           {{ team.name }}
@@ -63,20 +65,14 @@
 
       <br>
 
-      <div class="id-setup">
-        <input id="input" type="text" v-model="props.selectedTeam.inputText" placeholder="Enter team ID" maxlength="8">
-        <button @click="changeTeamID(props.selectedTeam.inputText)">
-            &#128269;
-        </button>
-      </div>
+      <input id="input" type="text" v-model="props.selectedTeam.inputText" placeholder="&#x1F50E; Enter id..." maxlength="8">
       <label for="input">{{ props.error }}</label>
 
     </div>
 
-    <hr v-if="userTeamData">
-
-
     <div class="card" style="border: none;" v-if="userTeamData">
+      <hr>
+
       <div class="title">
         <h4>{{ userTeamData.player_first_name  + " " + userTeamData.player_last_name }}</h4>
         <span>{{ userTeamData.player_region_name }}</span>
@@ -117,6 +113,9 @@
           {{ league.entry_rank.toLocaleString('de-DE') }} 
         </span>
       </div>
+
+      <TeamProgress :selectedTeamId="selectedTeam.id" />
+      
     </div>
   </div>
 </template>
@@ -157,16 +156,20 @@
     gap: .5rem;
   }
 
-  .id-setup, .youtubers {
+  .youtubers {
     display: flex;
-    justify-content: center;
   }
 
-  .id-setup {
+  input {
+    flex: 1;
+    border: 1px solid #333a3f;
+    background-color: transparent;
     border-radius: 1rem;
-    overflow: hidden;
-    max-width: max-content;
-    align-self: center;
+    padding: .25rem 1rem;
+  }
+
+  input:focus {
+    border-color: #a3a7aa;
   }
 
   .youtubers {
