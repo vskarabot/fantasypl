@@ -30,7 +30,7 @@ import { chips } from '../../constants';
 
 <template>
     <div class="my-team">
-        <div class="card" v-if="props.myTeam.entry_history">
+        <div class="card gw-live" v-if="props.myTeam.entry_history">
             <div v-if="props.myTeam.active_chip && chips[props.myTeam.active_chip]" class="row-stat-item">
                 <img class="chip-icon" :src=chips[props.myTeam.active_chip].icon>
                 <span>{{ chips[props.myTeam.active_chip].name }} Played</span>
@@ -98,6 +98,10 @@ import { chips } from '../../constants';
         justify-content: flex-start;
 
         overflow: hidden;
+    }
+
+    .gw-live {
+        justify-content: flex-start;
     }
 
     .field {

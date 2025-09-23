@@ -114,7 +114,7 @@
         </span>
       </div>
 
-      <TeamProgress :selectedTeamId="selectedTeam.id" />
+      <TeamProgress :selectedTeamId="selectedTeam.id"/>
       
     </div>
   </div>
