@@ -12,7 +12,7 @@
         LinearScale,
         CategoryScale,
     } from 'chart.js';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import axios from 'axios';
 
     ChartJS.register(
@@ -25,7 +25,7 @@ import axios from 'axios';
         CategoryScale
     );
 
-    // chart data
+    // chart options
     const chartOptions = { 
         responsive: true,
         maintainAspectRatio: false,
@@ -43,20 +43,17 @@ import axios from 'axios';
                 },
                 reverse: true,
                 min: 1,
-                ticks: {
-                    stepSize: 100000,
-                }
             }
         }
     }
 
     const chartData = ref(
         {
-            labels: ['GW1', 'GW2', 'GW3', 'GW4', 'GW5', 'GW6', 'GW7'],
+            labels: [],
             datasets: [
                 {
                     label: 'Rank',
-                    data: [10000, 200000, 150000, 1000, 60000, 500000, 4000],
+                    data: [],
                     borderColor: 'lime',
                     backgroundColor: 'lime',
                     pointRadius: 2,
@@ -70,20 +67,20 @@ import axios from 'axios';
         selectedTeamId: string
     }>();
 
-    const numOfGw = ref<number>(5);
-    const gws = ref({
-        5: 'Last 5',
-        10: 'Last 10',
-        38: 'Season',
+    const selectedGWs = ref(38);
+    const gwNumOptions = ref({
+        'Season': 38,
+        'Last 3': 3,
+        'Last 5': 5,
+        'Last 10': 10,
     });
 
     watch(() => props.selectedTeamId, async (id) => {
-        // !!! also contains previous seasons but ignored for now
         const res = await axios.get(import.meta.env.VITE_PROXY_URL + `https://fantasy.premierleague.com/api/entry/${id}/history`);
 
         if (res.status === 200) {
             chartData.value = {
-                labels: res.data.current.map((gw: any) => gw.event),
+                labels: res.data.current.map((gw: any) => 'GW' + gw.event),
                 datasets: [
                     {
                         label: 'Rank',
@@ -94,10 +91,24 @@ import axios from 'axios';
                         borderWidth: .5
                     }
                 ]
-            }
-            console.log(chartData.value)
+            };
         }
     }, {immediate: true});
+
+    const computedData = computed(() => {
+        if (selectedGWs.value >= chartData.value.labels.length) {
+            return chartData.value;
+        }
+        return {
+            labels: chartData.value.labels.slice(-selectedGWs.value),
+            datasets: [
+                {
+                    ...chartData.value.datasets[0],
+                    data: chartData.value.datasets[0].data.slice(-selectedGWs.value)
+                }
+            ]
+        }
+    });
 
 </script>
 
@@ -106,20 +117,51 @@ import axios from 'axios';
     <hr>
     <h5>Rank Progression</h5>
     <div class="button-container">
-        <div v-for="(value, key) in gws" class="show" @click="() => numOfGw = key">
-            {{ value }}
+        <div class="section">
+            <div 
+                v-for="(gws, label) in gwNumOptions" 
+                @click="selectedGWs = gws"
+                class="button"
+                :class="{ selected: selectedGWs === gws }"
+            >
+                {{ label }}
+            </div>
+        </div>
+        <div class="section">
+            <input type="checkbox"></input>
+            <span>Show Line</span>
         </div>
     </div>
     <div style="height: 250px; width: 100%;">
-        <Line :data="chartData" :options="chartOptions" />
+        <Line :data="computedData" :options="chartOptions" />
     </div>
     
 </template>
 
 <style scoped>
+
     .button-container {
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .section {
+        display: flex;
         gap: .5rem;
+    }
+
+    .button {
+        border: 1px solid #333a3f;
+        padding: .4rem .25rem;
+        border-radius: .5rem;
+        font-weight: 100;
+        font-size: .75rem;
+    }
+
+    .button:hover, .selected {
+        background-color: #333a3f;
+        cursor: pointer;
     }
 
     .show {
