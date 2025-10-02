@@ -1,115 +1,96 @@
 <script setup lang="ts">
-    import { Line } from 'vue-chartjs';
-
-    // chart imports and register
-    import {
-        Chart as ChartJS,
-        Title,
-        Tooltip,
-        Legend,
-        LineElement,
-        PointElement,
-        LinearScale,
-        CategoryScale,
-    } from 'chart.js';
-import { computed, ref, watch } from 'vue';
+import { Line } from 'vue-chartjs';
+import {
+    Chart as ChartJS,
+    Title,
+    Tooltip,
+    Legend,
+    LineElement,
+    PointElement,
+    LinearScale,
+    CategoryScale,
+} from 'chart.js';
+import { ref, computed, watch } from 'vue';
 import axios from 'axios';
+import type { ChartData, RegressionResult } from '../../types/charts';
 
-    ChartJS.register(
-        Title,
-        Tooltip,
-        Legend,
-        LineElement,
-        PointElement,
-        LinearScale,
-        CategoryScale
-    );
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
-    // chart options
-    const chartOptions = { 
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                grid: {
-                    color: '#333a3f',
-                    lineWidth: .2
-                }
-            },
-            y: {
-                grid: {
-                    color: '#333a3f',
-                    lineWidth: .2
-                },
-                reverse: true,
-                min: 1,
-            }
-        }
+const props = defineProps<{
+    selectedTeamId: string
+}>();
+
+const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        x: { grid: { lineWidth: 0 } },
+        y: { grid: { color: '#333a3f', lineWidth: 0.2 }, reverse: true, min: 1 }
     }
+};
 
-    const chartData = ref(
-        {
-            labels: [],
-            datasets: [
-                {
-                    label: 'Rank',
-                    data: [],
-                    borderColor: 'lime',
-                    backgroundColor: 'lime',
-                    pointRadius: 2,
-                    borderWidth: .5
-                }
-            ]
-        }
-    );
+const chartData = ref<ChartData>({
+    labels: [],
+    datasets: [
+        { label: 'Rank', data: [], borderColor: 'purple', backgroundColor: 'magenta', pointRadius: 2, borderWidth: 1 },
+        { label: 'Rank Projection', data: [], pointRadius: 0, borderWidth: 1 }
+    ]
+});
 
-    const props = defineProps<{
-        selectedTeamId: string
-    }>();
+const selectedGWs = ref<number>(38);
+const gwNumOptions = ref<{[key: string]: number}>({
+    'Season': 38,
+    'Last 5': 5,
+    'Last 10': 10,
+});
 
-    const selectedGWs = ref(38);
-    const gwNumOptions = ref({
-        'Season': 38,
-        'Last 3': 3,
-        'Last 5': 5,
-        'Last 10': 10,
-    });
+const reg = (yValues: number[]): RegressionResult => {
+    const n = yValues.length;
+    if (n === 0) return { predictedY: [], slope: 0 };
 
-    watch(() => props.selectedTeamId, async (id) => {
-        const res = await axios.get(import.meta.env.VITE_PROXY_URL + `https://fantasy.premierleague.com/api/entry/${id}/history`);
+    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+    yValues.forEach((y, i) => { sumX += i; sumY += y; sumXY += i * y; sumXX += i * i });
 
-        if (res.status === 200) {
-            chartData.value = {
-                labels: res.data.current.map((gw: any) => 'GW' + gw.event),
-                datasets: [
-                    {
-                        label: 'Rank',
-                        data: res.data.current.map((gw: any) => gw.overall_rank),
-                        borderColor: 'lime',
-                        backgroundColor: 'lime',
-                        pointRadius: 2,
-                        borderWidth: .5
-                    }
-                ]
-            };
-        }
-    }, {immediate: true});
+    const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+    const predictedY = yValues.map((_, i) => slope * i + intercept);
 
-    const computedData = computed(() => {
-        if (selectedGWs.value >= chartData.value.labels.length) {
-            return chartData.value;
-        }
-        return {
-            labels: chartData.value.labels.slice(-selectedGWs.value),
-            datasets: [
-                {
-                    ...chartData.value.datasets[0],
-                    data: chartData.value.datasets[0].data.slice(-selectedGWs.value)
-                }
-            ]
-        }
-    });
+    return { predictedY, slope };
+};
 
+watch(() => props.selectedTeamId, async (id) => {
+    const res = await axios.get(`${import.meta.env.VITE_PROXY_URL}https://fantasy.premierleague.com/api/entry/${id}/history`);
+    if (res.status !== 200) return;
+
+    const ranks: number[] = res.data.current.map((gw: any) => gw.overall_rank);
+    const { predictedY, slope } = reg(ranks);
+
+    chartData.value = {
+        labels: res.data.current.map((gw: any) => 'GW' + gw.event),
+        datasets: [
+            { ...chartData.value.datasets[0], data: ranks },
+            { ...chartData.value.datasets[1], data: predictedY, borderColor: slope <= 0 ? 'lime' : 'red' }
+        ]
+    };
+}, { immediate: true });
+
+const computedData = computed(() => {
+    const n = selectedGWs.value;
+    const { labels, datasets } = chartData.value;
+    if (!labels.length) return { labels: [], datasets: [] };
+
+    const start = Math.max(0, labels.length - n);
+    const sliceRanks = datasets[0].data.slice(start);
+    const { predictedY, slope } = reg(sliceRanks);
+
+    return {
+        labels: labels.slice(start),
+        datasets: [
+            { ...datasets[0], data: sliceRanks },
+            { ...datasets[1], data: predictedY, borderColor: slope <= 0 ? 'lime' : 'red' }
+        ]
+    };
+});
 </script>
 
 <template>
@@ -117,66 +98,40 @@ import axios from 'axios';
     <hr>
     <h5>Rank Progression</h5>
     <div class="button-container">
-        <div class="section">
-            <div 
-                v-for="(gws, label) in gwNumOptions" 
-                @click="selectedGWs = gws"
-                class="button"
-                :class="{ selected: selectedGWs === gws }"
-            >
-                {{ label }}
-            </div>
-        </div>
-        <div class="section">
-            <input type="checkbox"></input>
-            <span>Show Line</span>
+        <div v-for="(gws, label) in gwNumOptions" @click="selectedGWs = gws" class="button"
+            :class="{ selected: selectedGWs === gws }">
+            {{ label }}
         </div>
     </div>
-    <div style="height: 250px; width: 100%;">
+
+    <div class="chart-container">
         <Line :data="computedData" :options="chartOptions" />
     </div>
-    
 </template>
 
 <style scoped>
+.button-container {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
 
-    .button-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+.button {
+    border: 1px solid #333a3f;
+    padding: .4rem .25rem;
+    border-radius: .5rem;
+    font-weight: 100;
+    font-size: .75rem;
+}
 
-    .section {
-        display: flex;
-        gap: .5rem;
-    }
+.button:hover,
+.selected {
+    background-color: #333a3f;
+    cursor: pointer;
+}
 
-    .button {
-        border: 1px solid #333a3f;
-        padding: .4rem .25rem;
-        border-radius: .5rem;
-        font-weight: 100;
-        font-size: .75rem;
-    }
-
-    .button:hover, .selected {
-        background-color: #333a3f;
-        cursor: pointer;
-    }
-
-    .show {
-        border: 1px solid #333a3f;
-        padding: 0.5rem;
-        border-radius: .5rem;
-        width: fit-content;
-        font-size: .75rem;
-        color: '#333a3f';
-    }
-
-    .show:hover {
-        background-color: #333a3f;
-        cursor: pointer;
-    }
-
-    
+.chart-container {
+    flex: 1;
+    min-height: 250px;
+}
 </style>

@@ -145,8 +145,6 @@
 
     justify-content: flex-start;
     flex: 2;
-
-    max-width: 768px;
   }
 
   .creators {
